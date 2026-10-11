@@ -89,24 +89,44 @@ def fetch_micron_quarters() -> tuple[pd.DataFrame, str]:
     return q[["start", "end", "revenue"]], "Yahoo (last few quarters only)"
 
 
-def korea_by_quarter(monthly: pd.Series, quarters: pd.DataFrame) -> pd.Series:
-    """Sum monthly Korean exports over each Micron quarter's calendar months."""
+def korea_by_quarter(monthly: pd.Series, quarters: pd.DataFrame, n_months: int = 3) -> pd.Series:
+    """Sum monthly Korean exports over the first n_months of each Micron quarter.
+
+    n_months=3 uses the whole quarter. n_months=2 is the earlier, more
+    practical version: two months of Korean data are out about six weeks
+    before Micron reports.
+    """
     vals = []
     for _, row in quarters.iterrows():
         months = pd.period_range(row["start"] + pd.Timedelta(days=15), row["end"] - pd.Timedelta(days=15), freq="M")
-        idx = months.to_timestamp(how="end").normalize()
+        idx = months.to_timestamp(how="end").normalize()[:n_months]
         got = monthly.reindex(idx)
-        vals.append(got.sum() if got.notna().all() and len(got) == 3 else np.nan)
+        vals.append(got.sum() if got.notna().all() and len(got) == n_months else np.nan)
     return pd.Series(vals, index=pd.DatetimeIndex(quarters["end"]), name="korea_memory")
 
 
-def yoy_quarterly(s: pd.Series) -> pd.Series:
-    """Log growth versus four quarters earlier, in percent."""
-    return 100 * np.log(s).diff(4)
+def yoy_quarterly(s: pd.Series, tolerance_days: int = 20) -> pd.Series:
+    """Log growth versus the quarter ending about a year earlier, in percent.
+
+    Matched by date, not by position: SEC history has gaps (some 2009
+    quarters are missing), and "four rows back" would then compare the wrong
+    quarters.
+    """
+    s = s.sort_index()
+    prior = pd.merge_asof(
+        pd.DataFrame({"target": s.index - pd.Timedelta(days=364)}),
+        pd.DataFrame({"end": s.index, "prev": s.to_numpy()}),
+        left_on="target", right_on="end", direction="nearest",
+        tolerance=pd.Timedelta(days=tolerance_days),
+    )["prev"].to_numpy()
+    return pd.Series(100 * (np.log(s.to_numpy()) - np.log(prior)), index=s.index)
 
 
-def micron_analysis(quarters: pd.DataFrame, korea_memory_monthly: pd.Series, min_train: int = 12) -> tuple[pd.DataFrame, dict]:
-    korea = korea_by_quarter(korea_memory_monthly, quarters)
+def micron_analysis(quarters: pd.DataFrame, korea_memory_monthly: pd.Series, min_train: int = 12,
+                    n_months: int = 3, end: str | None = None) -> tuple[pd.DataFrame, dict]:
+    if end is not None:
+        quarters = quarters[quarters["end"] <= pd.Timestamp(end)]
+    korea = korea_by_quarter(korea_memory_monthly, quarters, n_months)
     df = pd.DataFrame({"mu_revenue": quarters["revenue"].to_numpy(), "korea_memory": korea.to_numpy()},
                       index=pd.DatetimeIndex(quarters["end"], name="quarter_end"))
     df["mu_yoy"] = yoy_quarterly(df["mu_revenue"])

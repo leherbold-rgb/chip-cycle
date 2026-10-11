@@ -15,9 +15,12 @@ One row per month and no duplicate months.
 Korea's chip exports are no longer manual: they come from UN Comtrade
 automatically (see `src/chipcycle/ingest/comtrade.py`).
 
-## tw_exports.csv: Taiwan exports
+## tw_exports.csv: Taiwan exports (optional, not used yet)
 
 Published by Taiwan's Ministry of Finance around the 7th to 9th of the
 following month. History is on the MOF trade statistics portal
 (portal.sw.nat.gov.tw). Start with total exports. Electronic components
 (HS chapter 85) can be added as its own series later.
+
+To use it, add a `Series(..., "csv", "tw_exports.csv", ...)` entry to
+`src/chipcycle/registry.py` with an 8-day release lag.

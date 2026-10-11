@@ -1,3 +1,4 @@
+import numpy as np
 import pandas as pd
 
 from chipcycle.micron import korea_by_quarter, quarters_from_facts
@@ -33,3 +34,15 @@ def test_korea_months_match_micron_quarter():
     q = pd.DataFrame({"start": [pd.Timestamp("2022-12-02")], "end": [pd.Timestamp("2023-03-02")], "revenue": [1]})
     # Dec, Jan, Feb.
     assert korea_by_quarter(monthly, q).iloc[0] == 12
+
+
+def test_yoy_matches_by_date_across_gaps():
+    from chipcycle.micron import yoy_quarterly
+
+    ends = pd.to_datetime(["2008-12-04", "2009-12-03", "2010-03-04", "2010-06-03", "2010-09-02", "2010-12-02"])
+    s = pd.Series([100, 200, 210, 220, 230, 400], index=ends, dtype=float)
+    g = yoy_quarterly(s)
+    # 2009-12 vs 2008-12, despite the missing 2009 quarters in between.
+    assert abs(g.loc["2009-12-03"] - 100 * np.log(2)) < 1e-9
+    assert np.isnan(g.loc["2010-03-04"])  # no quarter a year earlier
+    assert abs(g.loc["2010-12-02"] - 100 * np.log(2)) < 1e-9

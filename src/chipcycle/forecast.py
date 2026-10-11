@@ -58,8 +58,14 @@ def oos_forecast(
     p: int = 3,
     q: int = 3,
     min_train: int = 48,
+    window: int | None = None,
 ) -> pd.DataFrame:
-    """Expanding-window direct forecasts of y_{t+h}. Rows are indexed by target month."""
+    """Direct forecasts of y_{t+h}. Rows are indexed by target month.
+
+    Expanding window by default. With `window`, each fit uses only the most
+    recent `window` usable rows, which adapts faster to structural breaks at
+    the cost of noisier estimates.
+    """
     df = pd.concat([y.rename("y"), x.rename("x")], axis=1).dropna()
     Xb = _lagged(df["y"], p, "y")
     Xa = pd.concat([Xb, _lagged(df["x"], q, "x")], axis=1)
@@ -71,7 +77,7 @@ def oos_forecast(
         # the data", future included.
         if t - h + 1 <= 0:
             continue
-        train = slice(0, t - h + 1)
+        train = slice(0 if window is None else max(0, t - h + 1 - window), t - h + 1)
         Xb_tr, Xa_tr, y_tr = Xb.iloc[train], Xa.iloc[train], target.iloc[train]
         ok = Xa_tr.notna().all(axis=1) & y_tr.notna()
         if ok.sum() < min_train or Xa.iloc[t].isna().any() or t + h >= len(df):
