@@ -9,7 +9,7 @@ invalidate all of them.
 | File | Job |
 |---|---|
 | `registry.py` | Every series, where it comes from, and how many days after the period ends it is published |
-| `ingest/` | One fetcher per source (FRED, Yahoo, hand-collected CSV). Each returns the same shape |
+| `ingest/` | One fetcher per source (FRED, Yahoo, UN Comtrade, hand-collected CSV). Each returns the same shape |
 | `cache.py` | Saves each series to `data/raw/` so analysis never waits on, or silently changes with, a network call |
 | `timing.py` | Converts everything to monthly and builds the two panels below |
 | `cli.py` | `chipcycle fetch`, `chipcycle panel`, `chipcycle status` |
@@ -41,6 +41,19 @@ production around April 16. On April 2 you have a two-week head start on
 hard data about March. On April 30 you don't. The "lead" this project
 measures partly comes from **publication timing**, separate from any economic
 lead. Keeping those two apart is a good point to make in an interview.
+
+## Where the Korea chip data comes from
+
+Korea reports customs trade to the UN by HS commodity code. HS 8542 is all
+integrated circuits; HS 854232 is memory (DRAM and NAND), the slice that
+matters for Micron. UN Comtrade serves both monthly back to 2010 with no key.
+
+Two dates are worth knowing. MOTIE's flash release on the 1st is the famous
+early number, but it uses Korea's own product grouping (MTI codes), not HS.
+The HS-based customs figures come out around the 15th, so the registry uses
+a 15-day lag for these series. That is conservative: the true information
+edge is a bit larger than the model assumes, which is the safe direction to
+be wrong in.
 
 ## Choices worth defending
 

@@ -32,21 +32,26 @@ No results are reported until the stage that produces them is done.
 ```bash
 python -m venv .venv && source .venv/bin/activate
 pip install -e ".[dev]"
-pytest                  # 12 tests, no network needed
-chipcycle fetch         # FRED + Yahoo into data/raw/
+pytest                  # 14 tests, no network needed
+chipcycle fetch         # FRED, Yahoo, UN Comtrade into data/raw/
 chipcycle panel         # reference and real-time panels into data/processed/
 chipcycle status
 ```
 
-The Korea and Taiwan chip series need a one-time manual download. See
+Korea's chip and memory exports come from UN Comtrade (HS 8542 and 854232)
+with no key needed. Setting `COMTRADE_KEY` to a free registered key lifts the
+preview limits. Taiwan exports are still a manual CSV, see
 [data/manual/README.md](data/manual/README.md).
+
+Network hosts used: `fred.stlouisfed.org`, `query1.finance.yahoo.com`,
+`query2.finance.yahoo.com`, `fc.yahoo.com`, `comtradeapi.un.org`.
 
 ## Layout
 
 ```
 src/chipcycle/
   registry.py   every series, its source, and its publication lag
-  ingest/       FRED, Yahoo, and hand-collected CSV fetchers
+  ingest/       FRED, Yahoo, UN Comtrade, and hand-collected CSV fetchers
   cache.py      local parquet cache
   timing.py     monthly alignment, reference and real-time panels
   cli.py

@@ -12,21 +12,8 @@ date,value
 `date` can be any day inside the reference month. `value` is in US dollars.
 One row per month and no duplicate months.
 
-## kr_semi_exports.csv: Korea semiconductor exports
-
-The core signal. Published by Korea's Ministry of Trade, Industry and Energy
-(MOTIE) on the 1st of each month for the previous month, in a press release
-that breaks exports out by product, semiconductors included.
-
-Where to get history:
-- **K-stat** (stat.kita.net, run by the Korea International Trade
-  Association): trade by MTI code. Semiconductors are MTI 831. Monthly export
-  values back to the 1990s, downloadable to Excel.
-- Alternative: **Korea Customs Service** trade statistics (unipass.customs.go.kr),
-  by HS code 8542 (integrated circuits).
-
-Keep one source for the whole history. Mixing MTI 831 and HS 8542 will
-create a break in the series.
+Korea's chip exports are no longer manual: they come from UN Comtrade
+automatically (see `src/chipcycle/ingest/comtrade.py`).
 
 ## tw_exports.csv: Taiwan exports
 

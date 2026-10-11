@@ -17,6 +17,10 @@ def fetch(spec: Series, **kwargs) -> pd.Series:
         from chipcycle.ingest.yahoo import fetch_yahoo
 
         out = fetch_yahoo(spec.source_id, **kwargs)
+    elif spec.source == "comtrade":
+        from chipcycle.ingest.comtrade import fetch_comtrade
+
+        out = fetch_comtrade(spec.source_id, **kwargs)
     elif spec.source == "csv":
         from chipcycle.ingest.manual import load_manual
 
