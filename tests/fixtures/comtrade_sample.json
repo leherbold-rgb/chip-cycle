@@ -1,0 +1,6 @@
+{"elements": 4, "data": [
+  {"period": "202401", "reporterCode": 410, "flowCode": "X", "partnerCode": 0, "partner2Code": 0, "cmdCode": "8542", "customsCode": "C00", "motCode": 0, "primaryValue": 7000000000},
+  {"period": "202402", "reporterCode": 410, "flowCode": "X", "partnerCode": 0, "partner2Code": 0, "cmdCode": "8542", "customsCode": "C00", "motCode": 0, "primaryValue": 8000000000},
+  {"period": "202402", "reporterCode": 410, "flowCode": "X", "partnerCode": 0, "partner2Code": 0, "cmdCode": "8542", "customsCode": "C00", "motCode": 1000, "primaryValue": 500},
+  {"period": 202403, "reporterCode": 410, "flowCode": "X", "partnerCode": 156, "partner2Code": 0, "cmdCode": "8542", "customsCode": "C00", "motCode": 0, "primaryValue": 999}
+]}

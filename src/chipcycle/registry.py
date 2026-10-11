@@ -20,7 +20,7 @@ from __future__ import annotations
 from dataclasses import dataclass
 from typing import Literal
 
-Source = Literal["fred", "yahoo", "csv"]
+Source = Literal["fred", "yahoo", "csv", "comtrade"]
 Freq = Literal["D", "W", "M", "Q"]
 
 
@@ -28,7 +28,7 @@ Freq = Literal["D", "W", "M", "Q"]
 class Series:
     key: str  # our short name, used as the column name everywhere
     source: Source
-    source_id: str  # FRED id, Yahoo ticker, or CSV filename
+    source_id: str  # FRED id, Yahoo ticker, CSV filename, or Comtrade "reporter:hs:flow"
     freq: Freq  # native frequency as published
     release_lag_days: int  # days after period end until the value is public
     role: Literal["signal", "target", "market"]
@@ -39,9 +39,17 @@ REGISTRY: dict[str, Series] = {
     s.key: s
     for s in [
         # Leading signals: the chip side.
+        # Korea's customs data by HS code (via UN Comtrade). Korea Customs
+        # Service publishes final monthly figures around the 15th. MOTIE's
+        # flash total on the 1st uses a different product grouping, so 15 days
+        # is the honest lag for this series.
         Series(
-            "kr_semi_exports", "csv", "kr_semi_exports.csv", "M", 1, "signal",
-            "Korea semiconductor exports, USD (MOTIE, released the 1st of the following month)",
+            "kr_semi_exports", "comtrade", "410:8542:X", "M", 15, "signal",
+            "Korea integrated circuit exports, USD (HS 8542, UN Comtrade)",
+        ),
+        Series(
+            "kr_memory_exports", "comtrade", "410:854232:X", "M", 15, "signal",
+            "Korea memory chip exports, USD (HS 854232: DRAM and NAND, UN Comtrade)",
         ),
         Series(
             "tw_exports", "csv", "tw_exports.csv", "M", 8, "signal",

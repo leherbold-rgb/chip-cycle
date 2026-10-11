@@ -38,3 +38,20 @@ def test_manual_csv_rejects_duplicates(tmp_path):
 def test_manual_csv_missing_file_points_to_readme(tmp_path):
     with pytest.raises(FileNotFoundError, match="README"):
         load_manual("nope.csv", directory=tmp_path)
+
+
+def test_comtrade_keeps_only_national_totals():
+    import json
+
+    from chipcycle.ingest.comtrade import parse_comtrade
+
+    s = parse_comtrade(json.loads((FIXTURES / "comtrade_sample.json").read_text()))
+    # The transport-mode breakdown and the China-only row are dropped.
+    assert list(s.index) == [pd.Timestamp("2024-01-01"), pd.Timestamp("2024-02-01")]
+    assert s.tolist() == [7e9, 8e9]
+
+
+def test_comtrade_empty_response_is_empty_series():
+    from chipcycle.ingest.comtrade import parse_comtrade
+
+    assert parse_comtrade({"data": []}).empty
