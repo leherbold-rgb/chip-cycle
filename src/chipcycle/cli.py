@@ -3,6 +3,7 @@
     chipcycle fetch [--refresh]   download everything into data/raw/
     chipcycle panel               build both panels into data/processed/
     chipcycle status              show what is cached and how far it reaches
+    chipcycle analyze             run stages 2-6 and write results/
 """
 
 from __future__ import annotations
@@ -64,6 +65,36 @@ def cmd_panel(args: argparse.Namespace) -> int:
     return 0
 
 
+def _cached() -> dict[str, pd.Series]:
+    raw = {}
+    for spec in REGISTRY.values():
+        path = cache.cache_path(spec)
+        if path.exists():
+            raw[spec.key] = cache.load(path).rename(spec.key)
+    return raw
+
+
+def cmd_analyze(args: argparse.Namespace) -> int:
+    from chipcycle import micron, report
+
+    raw = _cached()
+    if not raw:
+        print("No cached data. Run `chipcycle fetch` first.")
+        return 1
+    missing = [k for k in REGISTRY if k not in raw]
+    if missing:
+        print(f"Not cached, skipped: {', '.join(missing)}")
+    try:
+        mq = micron.fetch_micron_quarters()
+        print(f"Micron revenue: {len(mq[0])} quarters from {mq[1]}")
+    except Exception as e:
+        print(f"Micron revenue unavailable: {type(e).__name__}: {e}")
+        mq = None
+    out = report.build(raw, mq)
+    print(f"Wrote {out}")
+    return 0
+
+
 def cmd_status(args: argparse.Namespace) -> int:
     for spec in REGISTRY.values():
         path = cache.cache_path(spec)
@@ -86,6 +117,7 @@ def main(argv: list[str] | None = None) -> int:
     f.set_defaults(func=cmd_fetch)
     sub.add_parser("panel", help="build reference and real-time panels").set_defaults(func=cmd_panel)
     sub.add_parser("status", help="show cache state").set_defaults(func=cmd_status)
+    sub.add_parser("analyze", help="run the analysis and write results/").set_defaults(func=cmd_analyze)
     args = p.parse_args(argv)
     return args.func(args)
 

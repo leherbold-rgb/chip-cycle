@@ -52,10 +52,6 @@ REGISTRY: dict[str, Series] = {
             "Korea memory chip exports, USD (HS 854232: DRAM and NAND, UN Comtrade)",
         ),
         Series(
-            "tw_exports", "csv", "tw_exports.csv", "M", 8, "signal",
-            "Taiwan total exports, USD (Ministry of Finance, ~7th-9th of the following month)",
-        ),
-        Series(
             "kr_exports_total", "fred", "XTEXVA01KRM667S", "M", 1, "signal",
             "Korea total exports, USD, seasonally adjusted (OECD MEI via FRED)",
         ),
@@ -64,9 +60,12 @@ REGISTRY: dict[str, Series] = {
             "us_indpro", "fred", "INDPRO", "M", 16, "target",
             "US industrial production index (Fed G.17, mid following month)",
         ),
+        # FRED only serves the last three years of the ICE BofA high yield
+        # spread, so Moody's Baa minus 10-year Treasury stands in for credit
+        # stress. It is investment grade, but it has decades of history.
         Series(
-            "us_hy_oas", "fred", "BAMLH0A0HYM2", "D", 1, "target",
-            "ICE BofA US High Yield option-adjusted spread, percent",
+            "us_baa_spread", "fred", "BAA10Y", "D", 1, "target",
+            "Moody's Baa corporate yield minus 10-year Treasury, percent",
         ),
         # Liquidity proxy components: Fed balance sheet minus TGA minus reverse repo.
         Series(

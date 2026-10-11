@@ -45,13 +45,14 @@ def test_comtrade_keeps_only_national_totals():
 
     from chipcycle.ingest.comtrade import parse_comtrade
 
-    s = parse_comtrade(json.loads((FIXTURES / "comtrade_sample.json").read_text()))
+    df = parse_comtrade(json.loads((FIXTURES / "comtrade_sample.json").read_text()))
     # The transport-mode breakdown and the China-only row are dropped.
-    assert list(s.index) == [pd.Timestamp("2024-01-01"), pd.Timestamp("2024-02-01")]
-    assert s.tolist() == [7e9, 8e9]
+    assert list(df["date"]) == [pd.Timestamp("2024-01-01"), pd.Timestamp("2024-02-01")]
+    assert df["value"].tolist() == [7e9, 8e9]
+    assert set(df["cmd"]) == {"8542"}
 
 
-def test_comtrade_empty_response_is_empty_series():
+def test_comtrade_empty_response_is_empty_frame():
     from chipcycle.ingest.comtrade import parse_comtrade
 
     assert parse_comtrade({"data": []}).empty
