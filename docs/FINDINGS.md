@@ -48,7 +48,7 @@ back to 1957. Micron revenue covers 69 quarters from SEC filings.
 | Before the AI boom (to 2022) | 23 | 19.2 pp | 16.5 pp | 91% | 0.18 |
 
 "pp" is percentage points of year-over-year revenue growth. "DM p" is the
-Diebold-Mariano test (Part 3 of the guide): below 0.05 means the improvement
+Diebold-Mariano test, which checks whether one forecast is significantly more accurate than another: below 0.05 means the improvement
 is unlikely to be luck.
 
 **What it means.** Korea's memory exports and Micron's revenue are two views
@@ -86,7 +86,7 @@ proven.
 The usual significance cutoff for a correlation with 144 observations is
 0.16. That assumes every month is independent. Year-over-year growth rates
 share 11 of 12 months with their neighbors, so they aren't. Accounting for
-that (phase-randomized surrogates, explained in the guide):
+that (phase-randomized surrogates: fake series with the same persistence but no real link):
 
 - the honest cutoff is 0.59-0.70, not 0.16, and
 - 144 months of chip data are worth only 10-15 independent observations.
@@ -187,7 +187,7 @@ Ordered by how much they matter.
 6. **Predict direction directly.** Since the signal carries direction but
    not size, model the probability that industrial production accelerates
    (a logistic regression) instead of its exact value. Score it with a
-   Brier score (explained in the guide).
+   Brier score (the average squared gap between a forecast probability and what happened).
 7. **Proper Micron baseline.** Compare against Micron's guidance midpoint,
    which is published in each earnings release, to see whether Korea's data
    add anything beyond what management already says.
