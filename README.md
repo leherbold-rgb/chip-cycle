@@ -28,8 +28,7 @@ it to Micron, whose two main competitors are Korean.
   gain came entirely from the COVID rebound; and the relationship broke in
   the 2023+ AI cycle (correlation 0.65 → 0.16).
 
-Full write-up: [docs/FINDINGS.md](docs/FINDINGS.md). Study guide with every
-concept explained: [docs/GUIDE.md](docs/GUIDE.md). Generated results:
+Full write-up: [docs/FINDINGS.md](docs/FINDINGS.md). Generated results:
 [results/results.md](results/results.md), [results/stress.md](results/stress.md),
 [results/backtest.md](results/backtest.md).
 
