@@ -1,0 +1,11 @@
+date,value,yoy_pct,confidence,source
+2025-12-01,20800000000,43.2,high,https://www.khan.co.kr/en/article/202601010921327
+2026-01-01,20540000000,102.7,high,https://www.koreatimes.co.kr/economy/20260201/exports-jump-34-in-january-thanks-to-robust-demand-for-semiconductors
+2026-02-01,25160000000,160.8,high,https://en.fnnews.com/news/202603011111033950 (one outlet gives 160.9)
+2026-03-01,32830000000,151.4,high,https://tradingeconomics.com/south-korea/exports-yoy/news/538027
+2026-04-01,31900000000,173.5,medium,https://tradingeconomics.com/south-korea/exports-yoy/news/546893 (single source)
+2026-05-01,37160000000,169.4,high,https://view.asiae.co.kr/en/article/2026060110205435664
+2026-06-01,44820000000,199.5,high,https://www.wam.ae/en/article/c103kpi-koreas-monthly-exports-hit-us100-billion-for-1st
+2026-07-01,41010000000,178.8,high,https://view.asiae.co.kr/en/article/2026080109133165502
+2026-08-01,46650000000,209.0,high,https://view.asiae.co.kr/en/article/2026090109342093991
+2026-09-01,60300000000,263.0,medium,https://www.koreatimes.co.kr/economy/20261001/koreas-sept-exports-hit-record-1209-bil-on-robust-chip-sales (growth given as "about 263%")

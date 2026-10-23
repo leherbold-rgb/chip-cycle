@@ -24,3 +24,28 @@ following month. History is on the MOF trade statistics portal
 
 To use it, add a `Series(..., "csv", "tw_exports.csv", ...)` entry to
 `src/chipcycle/registry.py` with an 8-day release lag.
+
+## kr_semi_motr.csv: Korea semiconductor exports, recent months
+
+Used by `chipcycle cycle`. Korea's trade ministry publishes the previous
+month's semiconductor exports and the year-over-year change on the 1st of
+each month. UN Comtrade posts the HS-code figures months later, so these were
+transcribed from press reports to cover the gap. Columns: `date`, `value`
+(USD), `yoy_pct` (as reported), `confidence` and `source` (the article).
+Where two outlets differ slightly the source note says so. The ministry's
+category is broader than HS 8542, so its levels run about 22% higher; the
+code joins on growth, not levels (see `src/chipcycle/recent.py`).
+
+To update: add the new month from the ministry's release, with its source.
+
+## micron_guidance.csv: Micron's guided revenue
+
+The midpoint and range for the next quarter, from Micron's earnings call.
+The quarter end is assumed to be 13 weeks after the last reported quarter.
+
+## dram_contract_price_reports.csv: reported memory prices
+
+Quarterly DRAM contract price changes as reported by one outlet's summary of
+TrendForce research, rounded. Low confidence. TrendForce's own pages were not
+reachable from the environment this was built in, so check them directly.
+

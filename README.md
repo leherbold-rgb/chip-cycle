@@ -28,6 +28,11 @@ it to Micron, whose two main competitors are Korean.
   gain came entirely from the COVID rebound; and the relationship broke in
   the 2023+ AI cycle (correlation 0.65 → 0.16).
 
+Update, October 2026: on three quarters the model had never seen, the Micron
+nowcast's typical miss was 11 log points against 44 for a naive baseline, and
+Micron's guidance implies year-over-year revenue growth peaks this quarter.
+See [results/current_cycle.md](results/current_cycle.md).
+
 Full write-up: [docs/FINDINGS.md](docs/FINDINGS.md). Generated results:
 [results/results.md](results/results.md), [results/stress.md](results/stress.md),
 [results/backtest.md](results/backtest.md).
@@ -49,11 +54,12 @@ Full write-up: [docs/FINDINGS.md](docs/FINDINGS.md). Generated results:
 ```bash
 python -m venv .venv && source .venv/bin/activate
 pip install -e ".[dev]"
-pytest                  # 31 tests, no network needed
+pytest                  # 37 tests, no network needed
 chipcycle fetch         # FRED, Yahoo, UN Comtrade (≈45 min, rate limited)
 chipcycle analyze       # results/results.md
 chipcycle stress        # results/stress.md
 chipcycle backtest      # results/backtest.md
+chipcycle cycle         # results/current_cycle.md: where the memory cycle stands now
 ```
 
 Network hosts used: `fred.stlouisfed.org`, `query1.finance.yahoo.com`,

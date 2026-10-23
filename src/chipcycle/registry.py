@@ -51,6 +51,13 @@ REGISTRY: dict[str, Series] = {
             "kr_memory_exports", "comtrade", "410:854232:X", "M", 15, "signal",
             "Korea memory chip exports, USD (HS 854232: DRAM and NAND, UN Comtrade)",
         ),
+        # Ministry of Trade release on the 1st, transcribed from press reports
+        # (see data/manual/README.md). Broader chip category than HS 8542, so it
+        # is used for recent months only, joined on growth. See recent.py.
+        Series(
+            "kr_semi_motr", "csv", "kr_semi_motr.csv", "M", 1, "signal",
+            "Korea semiconductor exports, USD, ministry basis (hand-entered, Dec 2025 on)",
+        ),
         Series(
             "kr_exports_total", "fred", "XTEXVA01KRM667S", "M", 1, "signal",
             "Korea total exports, USD, seasonally adjusted (OECD MEI via FRED)",

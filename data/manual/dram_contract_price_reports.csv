@@ -1,0 +1,5 @@
+period,qoq_change_pct,kind,confidence,source
+2026Q2,80,reported,low,"https://www.stockhub.kr/en/news/news_b7244c205001 (summary of a TrendForce report, rounded to about 80%)"
+2026Q3,40,reported,low,"https://www.stockhub.kr/en/news/news_b7244c205001 (summary of a TrendForce report, rounded to about 40%)"
+2026Q4,20,forecast,low,"https://www.stockhub.kr/en/news/news_b7244c205001 (summary of a TrendForce report dated 2026-10-20, about 20%)"
+2026Q4,12.5,forecast,low,"https://evertiq.com/news/54526 (earlier forecast of 10-15%, midpoint shown, undated)"

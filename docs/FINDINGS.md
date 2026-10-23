@@ -47,7 +47,7 @@ back to 1957. Micron revenue covers 69 quarters from SEC filings.
 | First 2 months only | 35 | 21.5 pp | 18.0 pp | 91% | 0.13 |
 | Before the AI boom (to 2022) | 23 | 19.2 pp | 16.5 pp | 91% | 0.18 |
 
-"pp" is percentage points of year-over-year revenue growth. "DM p" is the
+"pp" is log points of year-over-year revenue growth: a growth measure that matches ordinary percent for small changes but not for large ones (150 log points is +348%, not +150%). "DM p" is the
 Diebold-Mariano test, which checks whether one forecast is significantly more accurate than another: below 0.05 means the improvement
 is unlikely to be luck.
 
@@ -209,3 +209,50 @@ Ordered by how much they matter.
 The negative results are worth leading with. Building a backtest is easy;
 showing you can find where your own model is fooling you is the harder
 skill, and it's what interviewers in research roles want to hear.
+
+---
+
+## Update, October 2026: the cycle since the data ended
+
+The Korean chip series built on UN Comtrade stops at December 2025. The
+trade ministry's own monthly figures for 2026 were added from press reports
+(`data/manual/kr_semi_motr.csv`, with a source and confidence for each month),
+joined to the HS series on growth rates because the ministry counts a broader
+category. Growth rates agree closely where they overlap (December 2025:
+43.2% reported, 43.3% from HS 8542). Full tables are in
+[results/current_cycle.md](../results/current_cycle.md). All growth here is in
+ordinary percent.
+
+**The nowcast held up on quarters it had never seen.** Fitted on earlier
+quarters only, the Korea-based nowcast of Micron's year-over-year revenue
+growth was 151%, 300% and 382% for the quarters ending February, May and
+September 2026. Micron reported 196%, 346% and 379%. The typical miss was 11
+log points against 44 for the naive baseline. It under-predicted the first two
+quarters and was almost exact on the third. These quarters are far outside the
+range the relationship was fitted on, and there are only three of them.
+
+**Position in the cycle.**
+- Korean chip exports hit $60.3B in September, up about 263% on a year
+  earlier. The 3-month total grew 53%, 45%, 37%, 30% and 30% over the
+  previous 3 months in the five readings from May to September: still
+  strong, with the pace of increase easing and then flat.
+- Micron's quarter ending September 3 was $54.2B: up 31% on the quarter
+  and 379% on a year earlier. Quarter-on-quarter growth was 75%, 74% and
+  31% over the last three quarters, so it has slowed sharply.
+- Guidance for the next quarter is $60-63B, about 13% above the latest
+  quarter and 351% above a year earlier. Year-over-year growth would fall
+  for the first time in this upswing, because the same quarter a year earlier
+  grew 21% sequentially.
+- This is the longest upswing in the data: 14 quarters, against 8, 9 and 12
+  in earlier cycles. Past year-over-year growth peaks came 3 to 5 quarters
+  before revenue peaks. If the latest quarter is the year-over-year peak,
+  that points to a revenue peak between mid and late 2027. It rests on
+  three cycles and is a pattern, not a forecast.
+
+**Limits.** The 2026 Korean figures are transcribed from press reports, not
+the original release, and two months rest on a single source. Reported DRAM
+contract price changes (about +80%, +40% and a forecast +20% for the second,
+third and fourth quarters of 2026) come from one outlet's summary of
+TrendForce and are low confidence. The model has no data on factory
+spending, inventories or contract prices, which are what usually end a
+cycle.

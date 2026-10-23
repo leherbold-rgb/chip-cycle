@@ -6,6 +6,7 @@
     chipcycle analyze             run stages 2-6 and write results/
     chipcycle stress              run robustness checks into results/stress.md
     chipcycle backtest            accuracy and trading backtests into results/backtest.md
+    chipcycle cycle               where the memory cycle stands now, into results/current_cycle.md
 """
 
 from __future__ import annotations
@@ -111,6 +112,13 @@ def cmd_backtest(args: argparse.Namespace) -> int:
     return 0
 
 
+def cmd_cycle(args: argparse.Namespace) -> int:
+    from chipcycle import report
+
+    print(f"Wrote {report.build_cycle(_cached())}")
+    return 0
+
+
 def cmd_status(args: argparse.Namespace) -> int:
     for spec in REGISTRY.values():
         path = cache.cache_path(spec)
@@ -136,6 +144,7 @@ def main(argv: list[str] | None = None) -> int:
     sub.add_parser("analyze", help="run the analysis and write results/").set_defaults(func=cmd_analyze)
     sub.add_parser("stress", help="run robustness checks").set_defaults(func=cmd_stress)
     sub.add_parser("backtest", help="accuracy and trading backtests").set_defaults(func=cmd_backtest)
+    sub.add_parser("cycle", help="current memory cycle vs. past cycles").set_defaults(func=cmd_cycle)
     args = p.parse_args(argv)
     return args.func(args)
 
